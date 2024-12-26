@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello, world!</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="../static/style.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+</head>
+<body>
+<!-- Cabeçalho -->
+  <header>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="mainNav">
+        <div class="container">
+              <a class="navbar-brand" href="#">
+                Brand
+              </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+  </header>
+
+<!-- principal -->
+  <main>
+    <section>
+        {% block body %}
+
+        {% endblock %}
+    </section>
+  </main>
+
+<!-- rodapé -->
+<footer>
+    <small>
+        <p>
+            <a style="padding: 3px" href="https://www.linkedin.com/in/handerson-gleber-a0a96a30/"><img width="16" height="16" src="https://img.icons8.com/officexs/16/linkedin.png" alt="linkedin"/></a>
+            <a style="padding: 3px" href="https://www.instagram.com/handersongleber/"><img width="16" height="16" src="https://img.icons8.com/officexs/16/instagram-new.png" alt="instagram-new"/></a>
+            <a style="padding: 3px" href="https://www.youtube.com/@gleberphant"><img width="16" height="16" src="https://img.icons8.com/office/16/youtube-play.png" alt="youtube-play"/></a>
+            <a style="padding: 3px" href="https://github.com/gleberphant"><img width="16" height="16" src="https://img.icons8.com/tiny-glyph/16/github.png" alt="github"/></a>
+        </p>
+        <p>
+            Wanna help my journey? <a href="https://www.paypal.com/donate/?business=GZCPGEVTCZ8VW&no_recurring=0&currency_code=USD">Donate a cup of coffee</a>
+        <br>
+            <img width="32" height="32" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/32/external-loyalty-marketing-technology-flaticons-lineal-color-flat-icons.png" alt="Donate a cup of coffee">
+            © <script>document.write(new Date().getFullYear())</script> Handerson Gleber de Lima Cavalcanti.
+            <br> All Rights Reserved.
+        </p>
+    </small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="app.js"></script>
+</body>
+</html>

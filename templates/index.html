@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{%block body %}
+
+<form action="/" method="post">
+<div class="form-group">
+    <label for="task">Nova task</label>
+    <input autofocus type="text" class="form-control-lg" name="task" id="task" placeholder="Nova task">
+    <small id="tips" class="form-text text-muted">Escreva a nova tarefa.</small>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+<table class="table">
+<thead>
+<tr><th>TASK </th><th>DATA </th><th>menu</th></tr>
+</thead>
+    <tbody>
+
+{% for task in result %}
+
+
+    <tr>
+        <td>{{ task['task'] }}</td>
+        <td>{{ task['date'] }}</td>
+
+        <td><form action="/delete" method="post">
+        <input type="hidden" name="id" readonly value={{ task['id'] }} >
+        <button type="submit">Del</button>
+        </form></td>
+
+    </tr>
+
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
