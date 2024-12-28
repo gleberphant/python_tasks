@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{%block body %}
+
+<div class="container">
+
+    <div class="row justify-content-center my-3">
+        <div class="col text-center">
+            <form action="/" method="post">
+
+                <div class="form-group">
+                    <label for="task">Nova tarefa</label><br>
+
+                    <textarea class="form-control-lg " name="task" id="task"></textarea>
+                    <!-- <input autofocus type="text" class="form-control-lg" name="task" id="task" placeholder="Nova task"> -->
+                    <br>
+                    <label for="deadline">Data limite</label>
+                    <input class="form-control-lg" name="deadline" id="deadline" type="date">
+                    <br>
+                    <button type="submit" class="btn btn-primary">adicionar</button>
+                    <br>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>TAREFA </th><th>DATA LIMITE </th><th> </th><th> OPÇÕES</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for task in result %}
+                <tr>
+                    <td>{{ task['task'] }}</td>
+
+
+
+                    <td>
+                        {% if task['concluded'] == "false" %}
+                            {{ task['deadline'] }}
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">
+
+
+                        <form action="/{{ task['id'] }}/{{ task['concluded'] }}" method="get">
+                        {% if task['concluded'] == "false" %}
+                            <button type="submit" class="btn  btn-sm">Concluir</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-success btn-sm">✓</button>
+                        </form>
+                        {% endif %}
+
+                    </td>
+
+                    <td class="text-end">
+                        <form action="/delete" method="post">
+                            <input type="hidden" name="id" readonly value="{{ task['id'] }}" >
+                            <button type="submit" class="btn btn-danger btn-sm">Del</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
