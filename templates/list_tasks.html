@@ -38,9 +38,6 @@
             {% for task in result %}
                 <tr>
                     <td>{{ task['task'] }}</td>
-
-
-
                     <td>
                         {% if task['concluded'] == "false" %}
                             {{ task['deadline'] }}
@@ -49,21 +46,23 @@
 
                     <td class="text-end">
 
+                        <!-- Marcar como completa -->
+                        <form action="/{{ task['id'] }}?complete={{ task['concluded'] }}" method="POST">
+                            <input type="hidden" name="_method" value="PUT" readonly>
 
-                        <form action="/{{ task['id'] }}/{{ task['concluded'] }}" method="get">
-                        {% if task['concluded'] == "false" %}
+                            {% if task['concluded'] == "false" %}
                             <button type="submit" class="btn  btn-sm">Concluir</button>
-                        {% else %}
+                            {% else %}
                             <button type="submit" class="btn btn-success btn-sm">✓</button>
+                            {% endif %}
                         </form>
-                        {% endif %}
-
                     </td>
 
+                    <!-- deletar tarefa-->
                     <td class="text-end">
-                        <form action="/delete" method="post">
-                            <input type="hidden" name="id" readonly value="{{ task['id'] }}" >
-                            <button type="submit" class="btn btn-danger btn-sm">Del</button>
+                        <form action="/{{ task['id'] }}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE" readonly>
+                            <button type="submit" class="btn btn-danger btn-sm">X</button>
                         </form>
                     </td>
                 </tr>

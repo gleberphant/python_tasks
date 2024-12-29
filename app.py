@@ -3,49 +3,44 @@
     TODO - ADICIONAR GRUPO de notificações
     TODO - adicionar pessoa responsável
     TODO - adicionar controle usuário
+    TODO - converter em SPA com objetos JSON
 """
 
-
 import sqlite3
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash
 
 app = Flask(__name__)
 
 
-@app.route("/delete", methods=['POST'])
-def delete_task():
-    """ Deleta uma tarefa da lista """
+@app.route("/<int:task_id>", methods=['POST'])
+def delete_or_update_task(task_id):
+    """ Deleta ou atualiza uma tarefa da lista """
 
-    with sqlite3.connect("database.db") as con:
-        if request.form.get("id"):
-            task_parameters  = (request.form.get("id"), )
+    match request.form.get("_method"):
+        case "DELETE":
+            task_parameters  = (task_id, )
+            sql_query = "DELETE FROM tasks WHERE id=?"
+
+        case "PUT":
+            if request.args.get("complete"):
+                task_parameters = ("true" if request.args.get("complete") == "false" else "false", task_id )
+                sql_query = "UPDATE tasks SET concluded=? WHERE id=?"
+            else:
+                flash("Método inválido!")
+                return redirect(url_for("list_tasks"))
+        case _:
+            flash("Método inválido!")
+            return redirect(url_for("list_tasks"))
+
+    if sql_query and task_parameters:
+        with sqlite3.connect("database.db") as con:
             try:
-                con.execute("DELETE FROM tasks WHERE id=?",task_parameters )
+                con.execute(sql_query, task_parameters)
+                return redirect(url_for("list_tasks"))
+
             except Exception as e:
-                return f"Erro ao deletar ({e})"
-
-    return redirect(url_for("list_tasks"))
-
-
-
-
-@app.route("/<int:task_id>/<task_complete>", methods=['GET'])
-def check_task(task_id, task_complete):
-    """  Marca uma tarefa como concluída ou não"""
-
-    with sqlite3.connect("database.db") as con:
-        if task_id:
-
-            task_parameters = ("true" if task_complete == "false" else "false", task_id )
-
-            try:
-                con.execute("UPDATE tasks SET concluded=? WHERE id=? ", task_parameters )
-            except Exception as e:
-                return f"Erro ao concluir ({e})"
-
-    return redirect(url_for("list_tasks"))
-
-
+                flash(f"ERRO ({e})")
+                return redirect(url_for("list_tasks"))
 
 @app.route("/", methods=['POST'])
 def add_task():
@@ -76,9 +71,41 @@ def list_tasks():
         con.row_factory = sqlite3.Row
         result = con.execute("SELECT * FROM tasks").fetchall()
 
-
     return render_template("list_tasks.html", result=result)
 
 
+#
+# @app.route("/delete/<int:task_id>", methods=['POST', 'DELETE'])
+# def delete_task(task_id):
+#     """ Deleta uma tarefa da lista """
+#
+#     if request.form.get("_method") == "DELETE":
+#         with sqlite3.connect("database.db") as con:
+#
+#             task_parameters  = (task_id, )
+#             try:
+#                 con.execute("DELETE FROM tasks WHERE id=?",task_parameters )
+#             except Exception as e:
+#                 return f"Erro ao deletar ({e})"
+#
+#     return redirect(url_for("list_tasks"))
+#
+#
+# @app.route("/complete/<int:task_id>", methods=['POST'])
+# def check_task(task_id):
+#     """  Marca uma tarefa como concluída ou não"""
+#
+#     if request.form.get("_method") == "PUT":
+#         with sqlite3.connect("database.db") as con:
+#
+#             task_parameters = ("true" if request.args.get("complete")== "false" else "false", task_id )
+#             try:
+#                 con.execute("UPDATE tasks SET concluded=? WHERE id=? ", task_parameters )
+#             except Exception as e:
+#                 return f"Erro ao concluir ({e})"
+#
+#     return redirect(url_for("list_tasks"))
+
 if __name__ =="__main__":
+
     app.run(debug=True)
